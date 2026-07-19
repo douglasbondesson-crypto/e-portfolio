@@ -1,7 +1,7 @@
 # Douglas Bondesson – E-Portfolio
 
 ## About me
-I am a Civil Engineering student in Information Technology at KTH (Royal Institute of Technology).  
+I am studying for a Master of Science in Engineering in Information Technology at KTH Royal Institute of Technology.  
 I am interested in programming, problem solving, and building practical technical solutions.
 
 Contact: douglas.bondesson@gmail.com  
@@ -23,5 +23,4 @@ A group project developed at KTH where users can vote together to choose a resta
 **Technologies used:**
 JavaScript, REST API, JSON, Google Places API
 
-Project repository (group project):(KTH Git access may require KTH login)
-https://gits-15.sys.kth.se/iprog-students/dbon-theobo-torunha-HT25-Project.git
+**Source code:** The group repository is hosted on KTH's private Git service and is not publicly accessible. Access can be provided on request.
