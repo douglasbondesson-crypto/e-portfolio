@@ -29,11 +29,7 @@ In the Meet & Eat school project, restaurant options needed to display the dista
 
 ### Origin and simplifications
 
-<<<<<<< HEAD
-The functions `toRadians`, `isNumber`, and `computeDistanceKm` are unchanged from my contribution to `src/sources/preferenceSource.js`, added by Douglas Bondesson in commit `ea12dff`. Permission to publish my own contribution was confirmed before the export.
-=======
-Funktionerna `toRadians`, `isNumber` och `computeDistanceKm` är oförändrade från min del av projektarbetet.
->>>>>>> 1a78773a7db4b6d3b2a79449ab99468505a3e5a8
+The functions `toRadians`, `isNumber`, and `computeDistanceKm` are unchanged from my contribution to the group project.
 
 The example has been simplified by extracting the functions from the application. React, location permissions, API calls, and the rest of the project are omitted. A small demonstration uses fictional coordinates and prints the results to the terminal. No packages, API keys, or personal data are required.
 
