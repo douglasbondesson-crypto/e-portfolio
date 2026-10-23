@@ -7,8 +7,6 @@ I am interested in programming, problem solving, and building practical technica
 Contact: douglas.bondesson@gmail.com  
 LinkedIn: https://www.linkedin.com/in/douglas-bondesson-642b043b0
 
----
-
 ## Projects
 
 ### Meet & Eat (Group Project)
@@ -25,52 +23,65 @@ JavaScript, REST API, JSON, Google Places API
 
 **Source code:** The group repository is hosted on KTH's private Git service and is not publicly accessible. Access can be provided on request.
 
----
+## Körbart kodexempel: avstånd till restauranger
 
-## Körbart kodexempel: restaurangomröstning
+I skolprojektet Meet & Eat behövde restaurangalternativ visa avståndet från användarens position. Det här körbara proof-of-concept-exemplet i JavaScript beräknar fågelvägsavstånd i kilometer med Haversines formel och hanterar att en position saknas.
 
-Som ett **proof-of-concept** finns här en fristående prototyp av röstningsflödet i en restaurangväljare. Exemplet är framtaget med AI-stöd för e-portföljen och är inte gruppprojektets ursprungliga kod. Det visar hur användarens knapptryck blir data, hur röster räknas och hur resultatet presenteras.
+### Ursprung och förenkling
 
-### Kör själv
+Funktionerna `toRadians`, `isNumber` och `computeDistanceKm` är oförändrade från min del av `src/sources/preferenceSource.js`, tillagd av Douglas Bondesson i commit `ea12dff`. Publicering av min egen del har bekräftats som tillåten inför exporten.
 
-1. Ladda ned repot via **Code → Download ZIP** och packa upp det, eller klona repot.
-2. Öppna [examples/restaurant-vote/index.html](examples/restaurant-vote/index.html) i en webbläsare genom att dubbelklicka på den nedladdade filen. Inga paket, konton eller API-nycklar behövs. GitHubs filvy visar källkoden; själva demonstrationen körs lokalt.
-3. Rösta på Pizzeria två gånger och Sushibar en gång. Pizzeria ska leda med två röster av totalt tre.
-4. Rösta på Sushibar igen. Resultatet ska nu visa lika mellan Pizzeria och Sushibar.
-5. Tryck på **Nollställ röster**. Alla antal ska bli noll och ingen vinnare visas.
+Exemplet har förenklats genom att funktionerna lyfts ut ur appen. React, platsbehörigheter, API-anrop och övrig projektkod ingår inte. En ny, liten kördel använder påhittade koordinater och skriver resultat till terminalen. Inga paket, API-nycklar eller personuppgifter behövs.
 
-### Kod med förklaring
+### Central kod
 
-Beräkningen finns i [voting.js](examples/restaurant-vote/voting.js):
+De 24 centrala raderna nedan finns i [hela kodexemplet](distance-example.mjs), som även innehåller en liten kördel med exempeldata:
 
 ```javascript
-const counts = options.map(name => ({
-  name,
-  count: votes.filter(vote => vote === name).length
-}));
-const highest = Math.max(...counts.map(option => option.count));
-const winners = highest === 0 ? [] : counts
-  .filter(option => option.count === highest)
-  .map(option => option.name);
+function toRadians(degrees) {
+    return (degrees * Math.PI) / 180;
+}
+
+function isNumber(value) {
+    return typeof value === "number";
+}
+
+function computeDistanceKm(userLocation, placeLocation) {
+    if (!userLocation || !placeLocation) return null;
+    const lat1 = userLocation.lat;
+    const lng1 = userLocation.lng;
+    const lat2 = placeLocation.lat;
+    const lng2 = placeLocation.lng;
+    if (![lat1, lng1, lat2, lng2].every(isNumber)) return null;
+
+    const dLat = toRadians(lat2 - lat1);
+    const dLng = toRadians(lng2 - lng1);
+    const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+        Math.sin(dLng / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return 6371 * c;
+}
 ```
 
-- `options` innehåller restaurangerna och `votes` innehåller en restaurang per registrerad röst.
-- `map` skapar en resultatpost för varje restaurang. `filter` väljer dess röster och `length` räknar dem.
-- `Math.max` hittar det högsta röstetalet. Alla restauranger med det antalet returneras som ledare, så även lika resultat hanteras. Utan röster returneras en tom lista.
-- Funktionen validerar att alternativen är unika och att rösterna gäller ett befintligt alternativ. Den ändrar inte indata och kan testas utan webbläsare.
+`toRadians` omvandlar grader till radianer för de trigonometriska funktionerna. Positionskontrollerna returnerar `null` om en position saknas eller någon koordinat inte har typen `number`. Haversines formel ger vinkeln mellan punkterna; multiplikation med jordradien 6 371 km ger avståndet. Kördelen formaterar sedan resultatet med en decimal och visar en text för `null`.
 
-I [app.js](examples/restaurant-vote/app.js) registrerar `addEventListener` knapptryck. `votes.push(name)` lägger till rösten, och `render()` anropar beräkningen och uppdaterar sidan. `textContent` används för att visa text i gränssnittet. HTML-filen innehåller struktur, enkel responsiv formgivning och ytterligare förklaringar bredvid demonstrationen.
+### Körning
 
-### Avgränsning och nästa steg
-
-Prototypen visar ett fungerande flöde från röstning till resultat. Den använder fasta restauranger och tillfällig lagring i webbläsarens minne. Omladdning nollställer rösterna. Den har ingen server, inloggning, kontroll av en röst per person eller Google Places-integration. En gemensam omröstning mellan flera användare skulle behöva serverlagring och deltagaridentifiering.
-
-### Automatiska tester
-
-Med Node.js installerat, kör från repots rot:
+Med Node.js 18 eller senare, kör från repots rot:
 
 ```sh
-node --test examples/restaurant-vote/voting.test.js
+node distance-example.mjs
 ```
 
-Testerna kontrollerar noll röster, en ensam ledare, lika resultat och ogiltiga indata. Det manuella flödet ovan kontrollerar dessutom knappar och nollställning i webbläsaren.
+Förväntat resultat:
+
+```text
+Exempelköket: 111.2 km
+Samma plats: 0.0 km
+Okänd plats: Avstånd saknas
+```
+
+### Begränsningar
+
+Avståndet är en uppskattning på en sfärisk jord och beskriver fågelvägen, inte gångväg, bilväg eller restid. Originalets enkla typkontroll avvisar inte `NaN`, oändliga tal eller koordinater utanför giltiga intervall. Exemplet använder giltiga, påhittade koordinater; mer omfattande validering och skydd mot avrundningsfel vid nästan antipodala punkter ingår inte.
