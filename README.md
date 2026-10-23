@@ -23,19 +23,19 @@ JavaScript, REST API, JSON, Google Places API
 
 **Source code:** The group repository is hosted on KTH's private Git service and is not publicly accessible. Access can be provided on request.
 
-## Körbart kodexempel: avstånd till restauranger
+## Runnable code example: distance to restaurants
 
-I skolprojektet Meet & Eat behövde restaurangalternativ visa avståndet från användarens position. Det här körbara proof-of-concept-exemplet i JavaScript beräknar fågelvägsavstånd i kilometer med Haversines formel och hanterar att en position saknas.
+In the Meet & Eat school project, restaurant options needed to display the distance from the user's location. This runnable JavaScript proof of concept calculates the straight-line distance in kilometres using the Haversine formula and handles missing locations.
 
-### Ursprung och förenkling
+### Origin and simplifications
 
-Funktionerna `toRadians`, `isNumber` och `computeDistanceKm` är oförändrade från min del av `src/sources/preferenceSource.js`, tillagd av Douglas Bondesson i commit `ea12dff`. Publicering av min egen del har bekräftats som tillåten inför exporten.
+The functions `toRadians`, `isNumber`, and `computeDistanceKm` are unchanged from my contribution to `src/sources/preferenceSource.js`, added by Douglas Bondesson in commit `ea12dff`. Permission to publish my own contribution was confirmed before the export.
 
-Exemplet har förenklats genom att funktionerna lyfts ut ur appen. React, platsbehörigheter, API-anrop och övrig projektkod ingår inte. En ny, liten kördel använder påhittade koordinater och skriver resultat till terminalen. Inga paket, API-nycklar eller personuppgifter behövs.
+The example has been simplified by extracting the functions from the application. React, location permissions, API calls, and the rest of the project are omitted. A small demonstration uses fictional coordinates and prints the results to the terminal. No packages, API keys, or personal data are required.
 
-### Central kod
+### Core code
 
-De 24 centrala raderna nedan finns i [hela kodexemplet](distance-example.mjs), som även innehåller en liten kördel med exempeldata:
+The 24 core lines below are included in the [complete code example](distance-example.mjs), which also contains a short demonstration with sample data:
 
 ```javascript
 function toRadians(degrees) {
@@ -64,24 +64,24 @@ function computeDistanceKm(userLocation, placeLocation) {
 }
 ```
 
-`toRadians` omvandlar grader till radianer för de trigonometriska funktionerna. Positionskontrollerna returnerar `null` om en position saknas eller någon koordinat inte har typen `number`. Haversines formel ger vinkeln mellan punkterna; multiplikation med jordradien 6 371 km ger avståndet. Kördelen formaterar sedan resultatet med en decimal och visar en text för `null`.
+`toRadians` converts degrees to radians for the trigonometric functions. The location checks return `null` if either location is missing or any coordinate is not of type `number`. The Haversine formula calculates the angle between the points; multiplying it by the Earth's radius of 6,371 km gives the distance. The demonstration then formats the result to one decimal place and displays a message for `null`.
 
-### Körning
+### How to run
 
-Med Node.js 18 eller senare, kör från repots rot:
+With Node.js 18 or later installed, run this command from the repository root:
 
 ```sh
 node distance-example.mjs
 ```
 
-Förväntat resultat:
+Expected output:
 
 ```text
-Exempelköket: 111.2 km
-Samma plats: 0.0 km
-Okänd plats: Avstånd saknas
+Example Kitchen: 111.2 km
+Same location: 0.0 km
+Unknown location: Distance unavailable
 ```
 
-### Begränsningar
+### Limitations
 
-Avståndet är en uppskattning på en sfärisk jord och beskriver fågelvägen, inte gångväg, bilväg eller restid. Originalets enkla typkontroll avvisar inte `NaN`, oändliga tal eller koordinater utanför giltiga intervall. Exemplet använder giltiga, påhittade koordinater; mer omfattande validering och skydd mot avrundningsfel vid nästan antipodala punkter ingår inte.
+The distance is an estimate based on a spherical Earth and represents a straight-line distance, not a walking route, driving route, or travel time. The original basic type check does not reject `NaN`, infinite values, or coordinates outside valid ranges. This example uses valid, fictional coordinates; more comprehensive validation and protection against rounding errors for nearly antipodal points are not included.

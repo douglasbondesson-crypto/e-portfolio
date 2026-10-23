@@ -23,18 +23,18 @@ function computeDistanceKm(userLocation, placeLocation) {
     return 6371 * c;
 }
 
-// Påhittade platser: inga användaruppgifter eller externa API-anrop.
+// Fictional locations: no user data or external API calls.
 const userLocation = { lat: 0, lng: 0 };
 const restaurants = [
-    { name: "Exempelköket", location: { lat: 0, lng: 1 } },
-    { name: "Samma plats", location: { lat: 0, lng: 0 } },
-    { name: "Okänd plats", location: null },
+    { name: "Example Kitchen", location: { lat: 0, lng: 1 } },
+    { name: "Same location", location: { lat: 0, lng: 0 } },
+    { name: "Unknown location", location: null },
 ];
 
 for (const restaurant of restaurants) {
     const distanceKm = computeDistanceKm(userLocation, restaurant.location);
     const label = distanceKm === null
-        ? "Avstånd saknas"
+        ? "Distance unavailable"
         : `${distanceKm.toFixed(1)} km`;
     console.log(`${restaurant.name}: ${label}`);
 }
