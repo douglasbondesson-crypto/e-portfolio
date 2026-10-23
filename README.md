@@ -29,7 +29,7 @@ I skolprojektet Meet & Eat behövde restaurangalternativ visa avståndet från a
 
 ### Ursprung och förenkling
 
-Funktionerna `toRadians`, `isNumber` och `computeDistanceKm` är oförändrade från min del av `src/sources/preferenceSource.js`, tillagd av Douglas Bondesson i commit `ea12dff`. Publicering av min egen del har bekräftats som tillåten inför exporten.
+Funktionerna `toRadians`, `isNumber` och `computeDistanceKm` är oförändrade från min del av projektarbetet.
 
 Exemplet har förenklats genom att funktionerna lyfts ut ur appen. React, platsbehörigheter, API-anrop och övrig projektkod ingår inte. En ny, liten kördel använder påhittade koordinater och skriver resultat till terminalen. Inga paket, API-nycklar eller personuppgifter behövs.
 
